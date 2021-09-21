@@ -60,7 +60,7 @@ void PrintVector(const Vector<Vector3>& v)
 {
 	for (size_t i = 0; i < v.Size(); i++)
 	{
-		std::cout << v[i].x << ' ' << v[i].y << ' ' << v[i].z << '\n' ;
+		std::cout << v[i].x << ' ' << v[i].y << ' ' << v[i].z << '\n';
 	}
 }
 
