@@ -10,12 +10,27 @@ public:
 	constexpr size_t Size()const;
 	constexpr size_t Capacity()const;
 	void PushBack(const T& value);
+	void PushBack(const T&& value);
 	constexpr T& operator [](size_t pos) const;
 	T& operator [](size_t pos);
 	Vector<T>& operator=(const Vector<T>& rhs);
 	void Clear();
 	void PopBack();
 	~Vector();
+
+public:
+	template<typename... Args>
+	T& EmplaceBack(Args && ...args)
+	{
+		if (m_size >= m_capacity)
+		{
+			if (m_capacity == 0)m_capacity = 1;
+			Realloc(m_capacity * 2);
+		}
+		new(&m_data[m_size]) T(std::forward<Args>(args)...);
+		//m_data[m_size] = T(std::forward<Args>(args)...);
+		return m_data[m_size++];
+	}
 
 private:
 	void Realloc(size_t newCapacity);
@@ -74,6 +89,17 @@ inline void Vector<T>::PushBack(const T& value)
 }
 
 template<typename T>
+inline void Vector<T>::PushBack(const T&& value)
+{
+	if (m_size >= m_capacity)
+	{
+		if (m_capacity == 0)m_capacity = 1;
+		Realloc(m_capacity * 2);
+	}
+	m_data[m_size++] = std::move(value);
+}
+
+template<typename T>
 inline constexpr T& Vector<T>::operator[](size_t pos) const
 {
 	return m_data[pos];
@@ -98,32 +124,47 @@ inline Vector<T>& Vector<T>::operator=(const Vector<T>& rhs)
 template<typename T>
 inline void Vector<T>::Clear()
 {
-	delete[] m_data;
+	for (size_t i = 0; i < m_size; i++)
+	{
+		m_data[i].~T();
+	}
 	m_size = 0;
-	m_capacity = m_capacity / 2;
 }
 
 template<typename T>
 inline void Vector<T>::PopBack()
 {
-	m_size--;
+	if (m_size > 0)
+	{
+		m_size--;
+		m_data[m_size].~T();
+	}
 }
 
 template<typename T>
 inline Vector<T>::~Vector()
 {
-	delete[] m_data;
+	Clear();
+	::operator delete(m_data, m_capacity * sizeof(T));
 }
 
 template<typename T>
 inline void Vector<T>::Realloc(size_t newCapacity)
 {
-	T* newData = new T[newCapacity];
+	//T* newData = new T[newCapacity];
+	T* newData = (T*)::operator new(newCapacity * sizeof(T));
 	m_capacity = newCapacity;
 	for (size_t i = 0; i < m_size; i++)
 	{
 		newData[i] = std::move(m_data[i]);
 	}
-	delete[] m_data;
+
+	for (size_t i = 0; i < m_size; i++)
+	{
+		m_data[i].~T();
+	}
+
+	//delete[] m_data;
+	::operator delete(m_data, m_capacity * sizeof(T));
 	m_data = newData;
 }

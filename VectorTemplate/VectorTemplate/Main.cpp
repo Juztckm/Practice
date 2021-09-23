@@ -31,8 +31,14 @@ struct Vector3
 		std::cout << "Move\n"; 
 	}
 
+	~Vector3()
+	{
+		std::cout << "Destroyed\n";
+	}
+
 	Vector3& operator=(const Vector3& other) noexcept
 	{
+		std::cout << "Copy\n";
 		x = other.x;
 		y = other.y;
 		z = other.z;
@@ -41,14 +47,14 @@ struct Vector3
 
 	Vector3& operator=(const Vector3&& other) noexcept
 	{
+		std::cout << "Move\n";
 		x = other.x;
 		y = other.y;
 		z = other.z;
 		return *this;
 	}
 
-
-	const void PrintVector() const
+	void PrintVector() const noexcept
 	{
 		std::cout << x << ' ' << y << ' ' << z << '\n';
 	}
@@ -74,11 +80,22 @@ void PrintVector(const Vector<Vector3>&& v)
 
 uint32_t main()
 {
-	Vector3 v3;// = Vector3(5);
-	v3 = Vector3(5);
-	Vector<Vector3> v1;
-	v1.PushBack(v3);
-	PrintVector(Vector<Vector3>());
+	Vector<Vector3> v3;
+	v3.PushBack(Vector3());
+	v3.PushBack(Vector3(1.2));
+	v3.PushBack(Vector3(1,2,3));
+	PrintVector(v3);
+	v3.PopBack();
+	PrintVector(v3);
+	v3.EmplaceBack();
+	v3.EmplaceBack(1.4f);
+	PrintVector(v3);
+	v3.PopBack();
+	v3.Clear();
+	PrintVector(v3);
+	v3.EmplaceBack(7,4,6);
+	PrintVector(v3);
+	std::cout << "-----------------------------------------------------\n";
 #if 0
 	Vector<int> v_int;
 	for (size_t i = 0; i < 5; i++)
