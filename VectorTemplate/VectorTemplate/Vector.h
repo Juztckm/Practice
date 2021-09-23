@@ -28,6 +28,14 @@ public:
 		}
 	}
 
+	Vector(const T& noOfTimes, const T& value)
+	{
+		for (size_t i = 0; i < noOfTimes; i++)
+		{
+			PushBack(value);
+		}
+	}
+
 	template<typename... Args>
 	T& EmplaceBack(Args && ...args)
 	{

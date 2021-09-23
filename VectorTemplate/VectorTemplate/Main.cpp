@@ -81,6 +81,8 @@ void PrintVector(const Vector<Vector3>&& v)
 
 uint32_t main()
 {
+	Vector<int> z(10,9);
+	PrintVector(z);
 	Vector<int> v_int{1,2,3,4,5,6,7,8,9,0};
 	PrintVector(v_int);
 	Vector<Vector3> v3;
