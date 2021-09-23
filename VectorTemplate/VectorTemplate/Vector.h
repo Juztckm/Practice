@@ -1,8 +1,70 @@
 #pragma once
 
+template<typename Vector>
+class VectorIterator
+{
+public:
+	using ValueType = typename Vector::ValueType;
+	using PointerType = ValueType*;
+	using ReferenceType = ValueType&;
+public:
+	VectorIterator(PointerType ptr):m_ptr(ptr){}
+	VectorIterator& operator++()
+	{
+		m_ptr++;
+		return *this;
+	}
+	VectorIterator operator++(int)
+	{
+		VectorIterator iterator = *this;
+		++(*this);
+		return iterator;
+	}
+	VectorIterator& operator--()
+	{
+		m_ptr--;
+		return *this;
+	}
+	VectorIterator operator--(int)
+	{
+		VectorIterator iterator = *this;
+		--(*this);
+		return iterator;
+	}
+
+	ReferenceType operator[](int index)
+	{
+		return *(m_ptr + index);
+	}
+
+	PointerType operator->()
+	{
+		return m_ptr;
+	}
+	ReferenceType operator*()
+	{
+		return *m_ptr;
+	}
+
+	bool operator==(const VectorIterator& right) const
+	{
+		return m_ptr == right.m_ptr;
+	}
+	bool operator!=(const VectorIterator& right) const
+	{
+		return !(*this == right);
+	}
+
+private:
+	PointerType m_ptr;
+};
+
 template<typename T>
 class Vector
 {
+public:
+	using ValueType = T;
+	using Iterator = VectorIterator<Vector<T>>;
 public:
 	Vector();
 	Vector(const Vector& rhs);
@@ -17,7 +79,14 @@ public:
 	void Clear();
 	void PopBack();
 	~Vector();
-
+	Iterator begin()
+	{
+		return Iterator(m_data);
+	}
+	Iterator end()
+	{
+		return Iterator(m_data + m_size);
+	}
 public:
 
 	Vector(const std::initializer_list<T>& list)
@@ -99,8 +168,8 @@ inline void Vector<T>::PushBack(const T& value)
 {
 	if (m_size >= m_capacity)
 	{
-		if (m_capacity == 0)m_capacity = 1;
-		Realloc(m_capacity*2);
+		//if (m_capacity == 0)m_capacity = 1;
+		Realloc(m_capacity + m_capacity/2 + 1);
 	}
 	m_data[m_size++] = value;
 }

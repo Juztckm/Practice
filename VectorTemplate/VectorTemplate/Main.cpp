@@ -81,6 +81,19 @@ void PrintVector(const Vector<Vector3>&& v)
 
 uint32_t main()
 {
+	Vector<int> v_int{ 1,2,3,4,5,6,7,8,9,0 };
+	for (auto x : v_int)
+	{
+		std::cout << x << '\n';
+	}
+
+	for (Vector<int>::Iterator it = v_int.begin() ; it != v_int.end() ; it++)
+	{
+		std::cout << *it << '\n';
+	}
+
+
+#if 0
 	Vector<int> z(10,9);
 	PrintVector(z);
 	Vector<int> v_int{1,2,3,4,5,6,7,8,9,0};
@@ -101,7 +114,6 @@ uint32_t main()
 	v3.EmplaceBack(7,4,6);
 	PrintVector(v3);
 	std::cout << "-----------------------------------------------------\n";
-#if 0
 	Vector<int> v_int;
 	for (size_t i = 0; i < 5; i++)
 	{
