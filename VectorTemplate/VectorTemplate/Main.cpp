@@ -81,6 +81,16 @@ void PrintVector(const Vector<Vector3>&& v)
 
 uint32_t main()
 {
+	Vector<std::string> s_vec;
+	s_vec.EmplaceBack("a");
+	s_vec.EmplaceBack("s");
+	s_vec.EmplaceBack("d");
+	s_vec.EmplaceBack("f");
+	s_vec.EmplaceBack("g");
+
+	PrintVector(s_vec);
+
+#if 0
 	Vector<int> v_int{ 1,2,3,4,5,6,7,8,9,0 };
 	for (auto x : v_int)
 	{
@@ -93,7 +103,6 @@ uint32_t main()
 	}
 
 
-#if 0
 	Vector<int> z(10,9);
 	PrintVector(z);
 	Vector<int> v_int{1,2,3,4,5,6,7,8,9,0};

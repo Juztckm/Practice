@@ -110,8 +110,8 @@ public:
 	{
 		if (m_size >= m_capacity)
 		{
-			if (m_capacity == 0)m_capacity = 1;
-			Realloc(m_capacity * 2);
+			//if (m_capacity == 0)m_capacity = 1;
+			Realloc(m_capacity + m_capacity / 2 + 1);
 		}
 		new(&m_data[m_size]) T(std::forward<Args>(args)...);
 		//m_data[m_size] = T(std::forward<Args>(args)...);
@@ -179,8 +179,8 @@ inline void Vector<T>::PushBack(const T&& value)
 {
 	if (m_size >= m_capacity)
 	{
-		if (m_capacity == 0)m_capacity = 1;
-		Realloc(m_capacity * 2);
+		//if (m_capacity == 0)m_capacity = 1;
+		Realloc(m_capacity + m_capacity / 2 + 1);
 	}
 	m_data[m_size++] = std::move(value);
 }
@@ -242,7 +242,8 @@ inline void Vector<T>::Realloc(size_t newCapacity)
 	m_capacity = newCapacity;
 	for (size_t i = 0; i < m_size; i++)
 	{
-		newData[i] = std::move(m_data[i]);
+		//newData[i] = std::move(m_data[i]);
+		new(&newData[i]) T(std::move(m_data[i]));
 	}
 
 	for (size_t i = 0; i < m_size; i++)
