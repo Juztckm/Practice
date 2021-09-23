@@ -19,6 +19,15 @@ public:
 	~Vector();
 
 public:
+
+	Vector(const std::initializer_list<T>& list)
+	{
+		for (auto x : list)
+		{
+			PushBack(x);
+		}
+	}
+
 	template<typename... Args>
 	T& EmplaceBack(Args && ...args)
 	{

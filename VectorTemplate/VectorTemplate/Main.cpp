@@ -4,15 +4,6 @@
 #include <algorithm>
 #include "Vector.h"
 
-template<typename T>
-void PrintVector(const Vector<T>& v)
-{
-	for (size_t i = 0; i < v.Size(); i++)
-	{
-		std::cout << v[i] << '\n';
-	}
-	std::cout << "*******************************************" << '\n';
-}
 
 struct Vector3
 {
@@ -62,6 +53,16 @@ struct Vector3
 	float x = 0.0f, y = 0.0f, z = 0.0f;
 };
 
+template<typename T>
+void PrintVector(const Vector<T>& v)
+{
+	for (size_t i = 0; i < v.Size(); i++)
+	{
+		std::cout << v[i] << '\n';
+	}
+	std::cout << "_______________________________________\n";
+}
+
 void PrintVector(const Vector<Vector3>& v) 
 {
 	for (size_t i = 0; i < v.Size(); i++)
@@ -80,6 +81,8 @@ void PrintVector(const Vector<Vector3>&& v)
 
 uint32_t main()
 {
+	Vector<int> v_int{1,2,3,4,5,6,7,8,9,0};
+	PrintVector(v_int);
 	Vector<Vector3> v3;
 	v3.PushBack(Vector3());
 	v3.PushBack(Vector3(1.2));
